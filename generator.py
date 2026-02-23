@@ -6,7 +6,10 @@ from dotenv import load_dotenv
 load_dotenv()
 # client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 def get_client():
-    return OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+    return OpenAI(
+        api_key=os.environ["OPENAI_API_KEY"],
+        base_url="https://openrouter.ai/api/v1"
+    )
 
 def generate_storyboard(idea: str, num_scenes: int):
     client = get_client()
@@ -29,7 +32,7 @@ def generate_storyboard(idea: str, num_scenes: int):
     """
     
     scene_response = client.chat.completions.create(
-        model="gpt-4o",
+        model="openai/gpt-4o",
         messages=[{"role": "user", "content": scene_prompt}],
         response_format={"type": "json_object"}
     )
@@ -77,7 +80,7 @@ def generate_drawing_code(scene: dict) -> str:
     """
     
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="openai/gpt-4o",
         messages=[{"role": "user", "content": code_prompt}]
     )
     
