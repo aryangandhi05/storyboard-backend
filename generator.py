@@ -4,9 +4,12 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+def get_client():
+    return OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
 def generate_storyboard(idea: str, num_scenes: int):
+    client = get_client()
     # Call 1: Expand idea into scene descriptions
     scene_prompt = f"""
     You are a professional film storyboard artist.
@@ -50,6 +53,7 @@ def generate_storyboard(idea: str, num_scenes: int):
 
 
 def generate_drawing_code(scene: dict) -> str:
+    client = get_client()
     code_prompt = f"""
     You are a Python developer. Write Pillow (PIL) code to draw a simple 2D storyboard sketch panel for this scene:
     

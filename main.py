@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from generator import generate_storyboard
-import uvicorn
 import os
 
 app = FastAPI(title="Storyboard Generator API", version="1.0.0")
@@ -46,7 +45,3 @@ async def generate(req: StoryboardRequest):
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
