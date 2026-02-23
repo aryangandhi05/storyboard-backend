@@ -39,7 +39,18 @@ def generate_storyboard(idea: str, num_scenes: int):
     
     import json
     scenes_data = json.loads(scene_response.choices[0].message.content)
-    scenes = scenes_data.get("scenes", list(scenes_data.values())[0])
+    if isinstance(scenes_data, list):
+        scenes = scenes_data
+    elif isinstance(scenes_data, dict):
+        scenes = scenes_data.get("scenes")
+        if not isinstance(scenes, list):
+            scenes = next((v for v in scenes_data.values() if isinstance(v, list)), None)
+    else:
+        scenes = None
+
+    if not scenes:
+        raise ValueError("Model did not return valid scenes list")
+    
     
     # Call 2: Convert each scene into Pillow drawing code
     results = []
